@@ -4,13 +4,25 @@ class Solution:
         Do not return anything, modify board in-place instead.
         """
         possibilites = []
-        for row in range(9):
-            possible = []
-            for col in range(9):
-                if board[row][col] == '.':
-                    possible.append([])
-                    continue
-                possible.append(self.checkPossibleValues(row, col, board, ))
+        done = False
+        while not done:
+            done = True
+            for row in range(9):
+                row_possibilites = []   # Stores all of the possible values for each entry in the current row
+                for col in range(9):
+                    if board[row][col] != '.':
+                        row_possibilites.append([])
+                        continue
+                    done = False
+                    possible_values = self.checkPossibleValues(row, col, board, self.transposeBoard(board))
+                    if len(possible_values) == 1:
+                        print(f"row = {row}, col = {col}")
+                        print("possible_values = ", possible_values)
+                        board[row][col] = possible_values[0]
+                        row_possibilites.append([])
+                    else:
+                        row_possibilites.append(possible_values)
+
 
     
     def find3x3(self, row, col, board):
@@ -35,7 +47,13 @@ class Solution:
         """
         Transposes the current board and returns a new boardT
         """
-
+        boardT = []
+        for r in range(9):
+            row = []
+            for c in range(9):
+                row.append(board[c][r])
+            boardT.append(row)
+        return boardT
 
     def checkPossibleValues(self, row, col, board, boardT):
         """
@@ -65,11 +83,22 @@ for r in range(9):
 for i in board:
     print(i)
 print()
-for i in boardT:
+# for i in boardT:
+#     print(i)
+# print()
+
+sol = Solution()
+sol.solveSudoku(board)
+for i in board:
     print(i)
 print()
+# for i in range(9):
+#     for j in range(9):
+#         if board[i][j] != ".":
+#             continue
+#         print(f"i={i}, j={j}")
+#         print(sol.checkPossibleValues(i, j, board, boardT))
+#         print()
 
-# sol = Solution()
-# print(sol.checkPossibleValues(0, 3, board, boardT))
 
 
